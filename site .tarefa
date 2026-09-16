@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Lista de Tarefas</title>
+    
+    <!-- ======================================================= -->
+    <!-- ESTILO (CSS) - Controla as cores e o visual do site       -->
+    <!-- ======================================================= -->
+    <style>
+        /* Cores do Tema Claro (Padrão) */
+        :root {
+            --bg-principal: #f4f7f6;
+            --bg-card: #ffffff;
+            --texto: #333333;
+            --borda: #dddddd;
+            --botao-bg: #007bff;
+            --botao-texto: #ffffff;
+            --tarefa-concluida: #888888;
+        }
+
+        /* Cores do Tema Escuro (Ativado pelo botão) */
+        [data-theme="dark"] {
+            --bg-principal: #1e1e1e;
+            --bg-card: #2d2d2d;
+            --texto: #f4f7f6;
+            --borda: #444444;
+            --botao-bg: #bb86fc;
+            --botao-texto: #121212;
+            --tarefa-concluida: #777777;
+        }
+
+        /* Estrutura da Página */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-principal);
+            color: var(--texto);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Caixa Branca/Escura Central */
+        .container {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            transition: background-color 0.3s;
+        }
+
+        /* Topo do Site */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        /* Botão de Trocar de Tema */
+        #btn-tema {
+            background-color: var(--botao-bg);
+            color: var(--botao-texto);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s, background-color 0.3s;
+        }
+
+        #btn-tema:hover {
+            opacity: 0.9;
+        }
+
+        /* Campo de Texto e Botão de Add */
+        .input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #input-tarefa {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--borda);
+            border-radius: 6px;
+            background-color: var(--bg-card);
+            color: var(--texto);
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #btn-adicionar {
+            background-color: var(--botao-bg);
+            color: var(--botao-texto);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        /* Lista de Tarefas */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--borda);
+            transition: all 0.2s;
+        }
+
+        /* Estilo de quando a tarefa é clicada (riscada) */
+        li.concluida span {
+            text-decoration: line-through;
+            color: var(--tarefa-concluida);
+        }
+
+        .texto-tarefa {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Botão de Deletar Vermelho */
+        .btn-deletar {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-deletar:hover {
+            background-color: #ff1a1a;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================================================= -->
+    <!-- ESTRUTURA (HTML) - Os elementos que aparecem na tela     -->
+    <!-- ======================================================= -->
+    <div class="container">
+        <div class="header">
+            <h1>📝 Minhas Tarefas</h1>
+            <button id="btn-tema">🌙 Escuro</button>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="input-tarefa" placeholder="Digite uma nova tarefa...">
+            <button id="btn-adicionar">Add</button>
+        </div>
+
+        <ul id="lista-tarefas">
+            <!-- As tarefas inseridas pelo JavaScript vão aparecer aqui -->
+        </ul>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- LÓGICA (JAVASCRIPT) - Faz o site funcionar e ter vida    -->
+    <!-- ======================================================= -->
+    <script>
+        // 1. Buscando os elementos da tela para usar no código
+        const btnTema = document.getElementById('btn-tema');
+        const inputTarefa = document.getElementById('input-tarefa');
+        const btnAdicionar = document.getElementById('btn-adicionar');
+        const listaTarefas = document.getElementById('lista-tarefas');
+        const htmlEtiqueta = document.documentElement;
+
+        // 2. Lógica para Mudar o Tema (Claro / Escuro)
+        btnTema.addEventListener('click', () => {
+            const temaAtual = htmlEtiqueta.getAttribute('data-theme');
+            
+            if (temaAtual === 'dark') {
+                htmlEtiqueta.removeAttribute('data-theme');
+                btnTema.innerText = '🌙 Escuro';
+            } else {
+                htmlEtiqueta.setAttribute('data-theme', 'dark');
+                btnTema.innerText = '☀️ Claro';
+            }
+        });
+
+        // 3. Função que cria e adiciona a tarefa na tela
+        function adicionarTarefa() {
+            const textoTarefa = inputTarefa.value.trim();
+
+            // Alerta se o usuário tentar adicionar um balão vazio
+            if (textoTarefa === "") {
+                alert("Por favor, digite alguma tarefa antes de adicionar!");
+                return;
+            }
+
+            // Criando a linha da tarefa (<li>)
+            const li = document.createElement('li');
+
+            // Criando o texto da tarefa (<span>)
+            const span = document.createElement('span');
+            span.className = 'texto-tarefa';
+            span.innerText = textoTarefa;
+            
+            // Se clicar no texto, risca a tarefa (concluída)
+            span.addEventListener('click', () => {
+                li.classList.toggle('concluida');
+            });
+
+            // Criando o botão de excluir
+            const btnDeletar = document.createElement('button');
+            btnDeletar.className = 'btn-deletar';
+            btnDeletar.innerText = 'Excluir';
+            
+            // Se clicar no botão, remove a tarefa da tela
+            btnDeletar.addEventListener('click', () => {
+                li.remove();
+            });
+
+            // Colocando o texto e o botão dentro da linha
+            li.appendChild(span);
+            li.appendChild(btnDeletar);
+
+            // Colocando a linha dentro da lista oficial na tela
+            listaTarefas.appendChild(li);
+
+            // Limpa a caixinha de texto e coloca o cursor lá de novo
+            inputTarefa.value = "";
+            inputTarefa.focus();
+        }
+
+        // 4. Configurando os botões para ouvir os cliques
+        btnAdicionar.addEventListener('click', adicionarTarefa);
+
+        // Faz o botão "Enter" do teclado também adicionar a tarefa
+        inputTarefa.addEventListener('keypress', (evento) => {
+            if (evento.key === 'Enter') {
+                adicionarTarefa();
+            }
+        });
+    </script>
+</body>
+</html>
