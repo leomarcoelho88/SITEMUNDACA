@@ -1,0 +1,140 @@
+/* Variáveis de Cores para os Temas */
+:root {
+    --bg-principal: #f4f7f6;
+    --bg-card: #ffffff;
+    --texto: #333333;
+    --borda: #dddddd;
+    --botao-bg: #007bff;
+    --botao-texto: #ffffff;
+    --tarefa-concluida: #888888;
+}
+
+[data-theme="dark"] {
+    --bg-principal: #1e1e1e;
+    --bg-card: #2d2d2d;
+    --texto: #f4f7f6;
+    --borda: #444444;
+    --botao-bg: #bb86fc;
+    --botao-texto: #121212;
+    --tarefa-concluida: #777777;
+}
+
+/* Estilos Gerais */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-principal);
+    color: var(--texto);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+    background-color: var(--bg-card);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 450px;
+    transition: background-color 0.3s;
+}
+
+/* Cabeçalho e Botão de Tema */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+#btn-tema {
+    background-color: var(--botao-bg);
+    color: var(--botao-texto);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+#btn-tema:hover {
+    opacity: 0.9;
+}
+
+/* Área de Entrada (Input e Botão) */
+.input-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#input-tarefa {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--borda);
+    border-radius: 6px;
+    background-color: var(--bg-card);
+    color: var(--texto);
+    font-size: 16px;
+}
+
+#btn-adicionar {
+    background-color: var(--botao-bg);
+    color: var(--botao-texto);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Lista de Tarefas */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid var(--borda);
+    transition: all 0.2s;
+}
+
+li.concluida span {
+    text-decoration: line-through;
+    color: var(--tarefa-concluida);
+}
+
+.texto-tarefa {
+    cursor: pointer;
+    flex: 1;
+}
+
+.btn-deletar {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn-deletar:hover {
+    background-color: #ff1a1a;
+}
