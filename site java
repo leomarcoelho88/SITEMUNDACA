@@ -1,0 +1,74 @@
+// 1. Pegando os elementos do DOM
+const btnTema = document.getElementById('btn-tema');
+const inputTarefa = document.getElementById('input-tarefa');
+const btnAdicionar = document.getElementById('btn-adicionar');
+const listaTarefas = document.getElementById('lista-tarefas');
+const htmlEtiqueta = document.documentElement;
+
+// 2. Lógica de Alternar Tema (Claro / Escuro)
+btnTema.addEventListener('click', () => {
+    const temaAtual = htmlEtiqueta.getAttribute('data-theme');
+    
+    if (temaAtual === 'dark') {
+        htmlEtiqueta.removeAttribute('data-theme');
+        btnTema.innerText = '🌙 Escuro';
+    } else {
+        htmlEtiqueta.setAttribute('data-theme', 'dark');
+        btnTema.innerText = '☀️ Claro';
+    }
+});
+
+// 3. Função para Criar e Adicionar uma Nova Tarefa no DOM
+function adicionarTarefa() {
+    const textoTarefa = inputTarefa.value.trim();
+
+    // Validação simples para não adicionar texto vazio
+    if (textoTarefa === "") {
+        alert("Por favor, digite alguma tarefa!");
+        return;
+    }
+
+    // Criando o elemento <li> da lista
+    const li = document.createElement('li');
+
+    // Criando o texto da tarefa dentro de um <span>
+    const span = document.createElement('span');
+    span.className = 'texto-tarefa';
+    span.innerText = textoTarefa;
+    
+    // Evento para marcar/desmarcar como concluída ao clicar no texto
+    span.addEventListener('click', () => {
+        li.classList.toggle('concluida');
+    });
+
+    // Criando o botão de deletar
+    const btnDeletar = document.createElement('button');
+    btnDeletar.className = 'btn-deletar';
+    btnDeletar.innerText = 'Excluir';
+    
+    // Evento para remover a tarefa do DOM ao clicar em excluir
+    btnDeletar.addEventListener('click', () => {
+        li.remove();
+    });
+
+    // Juntando o texto e o botão dentro do <li>
+    li.appendChild(span);
+    li.appendChild(btnDeletar);
+
+    // Colocando o <li> dentro da nossa lista <ul>
+    listaTarefas.appendChild(li);
+
+    // Limpa o campo de entrada e foca nele novamente
+    inputTarefa.value = "";
+    inputTarefa.focus();
+}
+
+// 4. Ouvintes de Eventos (Clicks e Teclado)
+btnAdicionar.addEventListener('click', adicionarTarefa);
+
+// Permite adicionar a tarefa apertando a tecla "Enter"
+inputTarefa.addEventListener('keypress', (evento) => {
+    if (evento.key === 'Enter') {
+        adicionarTarefa();
+    }
+});
