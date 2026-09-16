@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Lista de Tarefas</title>
+    <!-- Vinculando o arquivo CSS externo -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>📝 Minhas Tarefas</h1>
+            <button id="btn-tema">🌙 Escuro</button>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="input-tarefa" placeholder="Digite uma nova tarefa...">
+            <button id="btn-adicionar">Add</button>
+        </div>
+
+        <ul id="lista-tarefas">
+            <!-- As tarefas do DOM vão aparecer aqui -->
+        </ul>
+    </div>
+
+    <!-- Vinculando o arquivo JavaScript externo -->
+    <script src="script.js"></script>
+</body>
+</html>
